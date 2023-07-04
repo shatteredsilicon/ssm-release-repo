@@ -1,4 +1,4 @@
-Name:           ssm
+Name:           ssm-release
 Version:        1.0
 Release:        1%{?dist}
 Summary:        Install the SSM repo

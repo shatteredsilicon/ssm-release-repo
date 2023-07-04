@@ -2,12 +2,12 @@
 
 echo "Packaging..."
 # tar -C seems to be buggy. It claims to change dir before further operations, but creates tar in previous dir
-tar -C rpmbuild/SOURCES -cf "$(dirname "$0")/rpmbuild/SOURCES/ssm-repo.tar" ssm-1.0
+tar -C rpmbuild/SOURCES -cf "$(dirname "$0")/rpmbuild/SOURCES/ssm-repo.tar" ssm-release-1.0
 
 echo ""
 echo ""
 echo "Building..."
-docker run --rm -it -v "$(dirname "$0")/rpmbuild:/home/builder/rpmbuild" --env RUNAS="$(id -u)" shatteredsilicon/rpmbuild:latest -- rpmbuild -bb -v /home/builder/rpmbuild/SPECS/ssm.spec
+docker run --rm -it -v "$(dirname "$0")/rpmbuild:/home/builder/rpmbuild" --env RUNAS="$(id -u)" shatteredsilicon/rpmbuild:latest -- rpmbuild -ba -v /home/builder/rpmbuild/SPECS/ssm.spec
 
 echo ""
 echo ""
