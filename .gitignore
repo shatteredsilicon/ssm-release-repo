@@ -1,0 +1,6 @@
+rpmbuild/SOURCES/ssm-repo.tar
+rpmbuild/RPMS/**
+rpmbuild/SRPMS/**
+rpmbuild/BUILD/**
+rpmbuild/BUILDROOT/**
+
