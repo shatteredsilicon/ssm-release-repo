@@ -1,0 +1,26 @@
+#!/bin/bash
+
+echo "Packaging..."
+# tar -C seems to be buggy. It claims to change dir before further operations, but creates tar in previous dir
+tar -C rpmbuild/SOURCES -cf "$(dirname "$0")/rpmbuild/SOURCES/ssm-repo.tar" ssm-1.0
+
+echo ""
+echo ""
+echo "Building..."
+docker run --rm -it -v "$(dirname "$0")/rpmbuild:/home/builder/rpmbuild" --env RUNAS="$(id -u)" shatteredsilicon/rpmbuild:latest -- rpmbuild -bb -v /home/builder/rpmbuild/SPECS/ssm.spec
+
+echo ""
+echo ""
+echo "Testing..."
+if ( docker run --rm -it -v "$(dirname "$0")/rpmbuild:/home/builder/rpmbuild" -u root --entrypoint=/bin/bash shatteredsilicon/rpmbuild:latest -c '
+	if ( yum search ssm-manage 2>/dev/null | grep ssm-manage >/dev/null ); then echo "SSM already available!"; exit -1 ; fi ;
+	rpm -i /home/builder/rpmbuild/RPMS/noarch/ssm-1.0-1.el8.noarch.rpm ;
+	if ( ! yum search ssm-manage 2>/dev/null | grep ssm-manage >/dev/null ); then echo "SSM repo failed to install!"; exit -2 ; fi ;
+	exit 0
+	')
+then
+	echo "Repo tested OK"
+else
+	echo "Repo failed"
+fi
+

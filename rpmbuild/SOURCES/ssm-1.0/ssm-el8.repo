@@ -1,0 +1,6 @@
+[shatteredsilicon-ssm]
+name = Shattered Silicon SSM ($basearch)
+baseurl = https://dl.shatteredsilicon.net/ssm/8/RPMS/$basearch
+gpgkey = file:///etc/pki/rpm-gpg/RPM-GPG-KEY-SSM-EL8
+gpgcheck = 1
+enabled = 1
